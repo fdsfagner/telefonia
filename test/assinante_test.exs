@@ -2,8 +2,6 @@ defmodule AssinanteTest do
   use ExUnit.Case
   doctest Assinante
 
-  @moduledoc false
-
   setup do
     File.write("pre.txt", :erlang.term_to_binary([]))
     File.write("pos.txt", :erlang.term_to_binary([]))
@@ -14,41 +12,44 @@ defmodule AssinanteTest do
     end)
   end
 
-  describe "testes responsáveis para cadastro de assinantes" do
-    test "deve retornar a estrututa do assinante" do
+  describe "testes responsaveis para cadastro de assinantes" do
+    test "deve retornar estrutura de assinante" do
       assert %Assinante{nome: "teste", numero: "teste", cpf: "teste", plano: "plano"}.nome ==
                "teste"
     end
 
     test "criar uma conta prepago" do
-      assert Assinante.cadastrar("Fagner da Silva", "123", "123") ==
-               {:ok, "Assinante Fagner da Silva cadastrado com Sucesso!"}
+      assert Assinante.cadastrar("Fagner", "12345", "12345", :prepago) ==
+               {:ok, "Assinante Fagner cadastrado com sucesso!"}
     end
 
-    test "deve retornar erro informando que assinante já está cadastrado" do
-      Assinante.cadastrar("Fagner da Silva", "123", "123")
+    test "deve retornar erro dizendo que assinante ja esta cadastrado" do
+      Assinante.cadastrar("Fagner", "12345", "12345", :prepago)
 
-      assert Assinante.cadastrar("Fagner da Silva", "123", "123") ==
-               {:error, "Assinante com esse numero Cadastrado!"}
+      assert Assinante.cadastrar("Fagner", "12345", "12345", :prepago) ==
+               {:error, "Assinante com este numero Cadastrado!"}
     end
   end
 
-  describe "testes responsáveis por busca de assinantes" do
+  describe "testes responsaveis por busca de assinantes" do
     test "busca pospago" do
-      Assinante.cadastrar("Fagner", "123", "123", :pospago)
-      assert Assinante.buscar_assinante("123", :pospago).nome == "Fagner"
+      Assinante.cadastrar("Fagner", "12345", "12345", :pospago)
+      assert Assinante.buscar_assinante("12345", :pospago).nome == "Fagner"
+      assert Assinante.buscar_assinante("12345", :pospago).plano.__struct__ == Pospago
     end
 
     test "busca prepago" do
-      Assinante.cadastrar("Fagner", "123", "123")
-      assert Assinante.buscar_assinante("123", :prepago).nome == "Fagner"
+      Assinante.cadastrar("Fagner", "12345", "12345", :prepago)
+      assert Assinante.buscar_assinante("12345", :prepago).nome == "Fagner"
     end
   end
 
   describe "delete" do
     test "deve deletar o assinante" do
-      Assinante.cadastrar("Fagner", "123", "123")
-      assert Assinante.deletar("123") == {:ok, "Assinante Fagner deletado!"}
+      Assinante.cadastrar("Fagner", "12345", "12345", :prepago)
+      Assinante.cadastrar("Tatiana", "33333", "87654", :prepago)
+
+      assert Assinante.deletar("12345") == {:ok, "Assinante Fagner deletado!"}
     end
   end
 end

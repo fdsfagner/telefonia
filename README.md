@@ -18,3 +18,10 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/telefonia](https://hexdocs.pm/telefonia).
+
+
+Passar o exdocs
+https://github.com/elixir-lang/ex_doc/blob/master/mix.exs
+
+passar o watch
+https://github.com/lpil/mix-test.watch
